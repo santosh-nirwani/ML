@@ -37,7 +37,7 @@ most_profitable_coeffvariation <- global %>%
   group_by(marketsegment = marketsegment, Month = Order.Date.Month) %>% 
   summarize(M.Profit = sum(Profit))
 
-# cv() is the function which provides us the coefficient of variation
+# cv() is the function from library raster which provides us the coefficient of variation
 coeffofvar <- aggregate(M.Profit ~ marketsegment,most_profitable_coeffvariation,function(x){
   Coeff = cv(x)
 })
