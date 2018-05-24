@@ -8,9 +8,10 @@ global <- read.csv("Global Superstore.csv")
 str(global)
 
 #Check for NA's
+sapply(global,function(x) sum(is.na(x))) # we can ignore the postal.code as we are not using it in our modelling
 
 # Check for duplicates
-
+sum(duplicated(global))
 
 #lets convert the order date to date formate and extract the year and month from the date
 global$Order.Date <- as.Date(global$Order.Date,format = "%d-%m-%Y")
@@ -31,6 +32,7 @@ most_profitable <- global %>% group_by(marketsegment = marketsegment) %>% summar
 bar_theme<- theme(axis.text.x = element_text(angle = 90, hjust = 1,vjust = 0.5), 
                   legend.position="none")
 ggplot(most_profitable,aes(x=marketsegment,Profit)) + geom_bar(stat = "identity") + bar_theme  
+
 # we clearly see Consumer_Apac = 222817.560
 # and Consumer_EU = 188687.707 are the 2 most profitable marketsegments
 
@@ -147,7 +149,7 @@ fcast <- global_pred_out
 MAPE_class_dec <- accuracy(fcast,outdata$Sales)
 MAPE_class_dec
 
-# we got MAPE = 29.09711
+############################ we got MAPE using classical decomposition = 29.09711
 
 #Let's also plot the predictions along with original values, to
 #get a visual feel of the fit
@@ -195,6 +197,8 @@ fcast_auto_arima <- predict(autoarima, n.ahead = 12)
 #We compare the 1st 6 predecited values with the outdata$Sales to find the MAPE. we also have the next 6 months predicted from 49:54
 MAPE_auto_arima <- accuracy(fcast_auto_arima[1:6]$pred,outdata$Sales)
 MAPE_auto_arima
+
+############################ MAPE using Arima 27.68952
 
 #Lastly, let's plot the predictions along with original values, to
 #get a visual feel of the fit
@@ -290,7 +294,7 @@ fcast <- global_pred_out
 MAPE_class_dec <- accuracy(fcast,outdata$Quantity)
 MAPE_class_dec
 
-# we got MAPE = 29.09711
+###################### we got MAPE for classical decomposition = 29.09711
 
 #Let's also plot the predictions along with original values, to
 #get a visual feel of the fit
@@ -335,7 +339,7 @@ fcast_auto_arima <- predict(autoarima, n.ahead = 6)
 MAPE_auto_arima <- accuracy(fcast_auto_arima$pred,outdata$Quantity)
 MAPE_auto_arima
 
-#MAPE 30.13319
+################### MAPE for Arima 30.13319
 
 #Lastly, let's plot the predictions along with original values, to
 #get a visual feel of the fit
