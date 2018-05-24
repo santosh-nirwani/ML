@@ -2,9 +2,14 @@ library("dplyr")
 library("ggplot2")
 library("tseries")
 library("forecast")
+
 #Read the Superstore file
 global <- read.csv("Global Superstore.csv")
 str(global)
+
+#Check for NA's
+
+# Check for duplicates
 
 
 #lets convert the order date to date formate and extract the year and month from the date
@@ -161,6 +166,7 @@ for (i in 1:6){
 
 global_pred_out2 <- predict(lmfit,data.frame(Month = timevals_out2))
 summary(global_pred_out2)
+# these are our Sales predictions for the next 6 months
 global_pred_out2
 
 #######################END Classical Decomposition Consumer_EU SALES####################################################
@@ -303,6 +309,7 @@ for (i in 1:6){
 
 global_pred_out2 <- predict(lmfit,data.frame(Month = timevals_out2))
 
+global_pred_out2
 ##############################End Classical Decomposition Consumer_EU Quantity###############################
 
 ####################### ARIMA Consumer_EU Quantity######################################################################
@@ -327,6 +334,8 @@ fcast_auto_arima <- predict(autoarima, n.ahead = 6)
 
 MAPE_auto_arima <- accuracy(fcast_auto_arima$pred,outdata$Quantity)
 MAPE_auto_arima
+
+#MAPE 30.13319
 
 #Lastly, let's plot the predictions along with original values, to
 #get a visual feel of the fit
@@ -382,7 +391,7 @@ for (i in seq(n-w+1, n)) {
 
 lines(Consumer_APAC_Sales_smoothedseries, col="red", lwd=2)
 
-#######################Classical Decomposition Consumer_EU SALES####################################################
+#######################Classical Decomposition Consumer_APAC SALES####################################################
 #Building a model on the smoothed time series using classical decomposition
 #First, let's convert the time series to a dataframe
 
@@ -431,7 +440,7 @@ fcast <- global_pred_out
 MAPE_class_dec <- accuracy(fcast,outdata$Sales)
 MAPE_class_dec
 
-# we got MAPE = 29.09711
+# we got MAPE = 26.89676
 
 #Let's also plot the predictions along with original values, to
 #get a visual feel of the fit
@@ -452,10 +461,10 @@ global_pred_out2 <- predict(lmfit,data.frame(Month = timevals_out2))
 summary(global_pred_out2)
 
 
-#######################END Classical Decomposition Consumer_EU SALES####################################################
+#######################END Classical Decomposition Consumer_APAC SALES####################################################
 
 
-####################### ARIMA Consumer_EU SALES######################################################################
+####################### ARIMA Consumer_APAC SALES######################################################################
 
 #So, that was classical decomposition, now let's do an ARIMA fit
 
@@ -478,6 +487,7 @@ fcast_auto_arima <- predict(autoarima, n.ahead = 6)
 MAPE_auto_arima <- accuracy(fcast_auto_arima$pred,outdata$Sales)
 MAPE_auto_arima
 
+# 27.68952
 #Lastly, let's plot the predictions along with original values, to
 #get a visual feel of the fit
 
@@ -486,9 +496,9 @@ plot(Consumer_APAC_Sales_agg_ts, col = "black")
 lines(auto_arima_pred, col = "red")
 
 
-##############################END ARIMA Consumer_EU SALES#############################################################
+##############################END ARIMA Consumer_APAC SALES#############################################################
 
-##############################Consumer_EU Quantity###############################
+##############################Consumer_APAC Quantity###############################
 ########****************************
 
 str(Consumer_APAC_Sales)
@@ -529,7 +539,7 @@ colnames(Consumer_APAC_Quantity_smootheddf) <- c('Month', 'Quantity')
 
 Consumer_APAC_Quantity_smootheddf$Quantity <- as.numeric(Consumer_APAC_Quantity_smootheddf$Quantity)
 
-##############################Classical Decomposition Consumer_EU Quantity###############################
+##############################Classical Decomposition Consumer_APAC Quantity###############################
 
 lmfit <- lm(Quantity ~ sin(0.5*Month) * poly(Month,1) + cos(0.5*Month) * poly(Month,1)
             + Month, data=Consumer_APAC_Quantity_smootheddf)
@@ -591,9 +601,9 @@ for (i in 1:6){
 
 global_pred_out2 <- predict(lmfit,data.frame(Month = timevals_out2))
 
-##############################End Classical Decomposition Consumer_EU Quantity###############################
+##############################End Classical Decomposition Consumer_APAC Quantity###############################
 
-####################### ARIMA Consumer_EU Quantity######################################################################
+####################### ARIMA Consumer_APAC Quantity######################################################################
 
 #So, that was classical decomposition, now let's do an ARIMA fit
 
